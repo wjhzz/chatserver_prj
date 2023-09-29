@@ -13,6 +13,24 @@ MsgHandler ChatService::getHandler(int msgID)
     }
     return _handlerMap[msgID];
 }
+
+// 服务器异常重置
+void ChatService::reset()
+{
+    // 把online状态的用户，设置成offline
+    string userids;
+    for (auto &it : _userConnMap)
+    {
+        userids += to_string(it.first) + ",";
+    }
+
+    if (userids.size() > 0)
+    {
+        userids.pop_back();
+        _userModel.resetState(userids);
+    }
+}
+
 // 登录
 void ChatService::login(const TcpConnectionPtr &conn, json &js, Timestamp time)
 {
@@ -51,6 +69,7 @@ void ChatService::login(const TcpConnectionPtr &conn, json &js, Timestamp time)
             response["errno"] = 0;
             response["id"] = user.getId();
             response["name"] = user.getName();
+
             // 查询该用户是否有离线消息
             vector<string> vec = _offlineMsgModel.query(id);
             if (!vec.empty())
@@ -61,20 +80,20 @@ void ChatService::login(const TcpConnectionPtr &conn, json &js, Timestamp time)
             }
 
             // 查询该用户的好友信息并返回
-            // vector<User> userVec = _friendModel.query(id);
-            // if (!userVec.empty())
-            // {
-            //     vector<string> vec2;
-            //     for (User &user : userVec)
-            //     {
-            //         json js;
-            //         js["id"] = user.getId();
-            //         js["name"] = user.getName();
-            //         js["state"] = user.getState();
-            //         vec2.push_back(js.dump());
-            //     }
-            //     response["friends"] = vec2;
-            // }
+            vector<User> userVec = _friendModel.query(id);
+            if (!userVec.empty())
+            {
+                vector<string> vec2;
+                for (User &user : userVec)
+                {
+                    json js;
+                    js["id"] = user.getId();
+                    js["name"] = user.getName();
+                    js["state"] = user.getState();
+                    vec2.push_back(js.dump());
+                }
+                response["friends"] = vec2;
+            }
 
             // // 查询用户的群组信息
             // vector<Group> groupuserVec = _groupModel.queryGroups(id);
@@ -193,4 +212,14 @@ void ChatService::oneChat(const TcpConnectionPtr &conn, json &js, Timestamp time
 
     // toid不在线，存储离线消息
     _offlineMsgModel.insert(toid, js.dump());
+}
+
+// 添加好友业务 msgid id friendid
+void ChatService::addFriend(const TcpConnectionPtr &conn, json &js, Timestamp time)
+{
+    int userid = js["id"].get<int>();
+    int friendid = js["friendid"].get<int>();
+
+    // 存储好友信息
+    _friendModel.insert(userid, friendid);
 }

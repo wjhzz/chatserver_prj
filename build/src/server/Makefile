@@ -187,6 +187,30 @@ main.cpp.s:
 	cd /home/wjh/chat_prj/build && $(MAKE) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+model/friend.o: model/friend.cpp.o
+.PHONY : model/friend.o
+
+# target to build an object file
+model/friend.cpp.o:
+	cd /home/wjh/chat_prj/build && $(MAKE) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.o
+.PHONY : model/friend.cpp.o
+
+model/friend.i: model/friend.cpp.i
+.PHONY : model/friend.i
+
+# target to preprocess a source file
+model/friend.cpp.i:
+	cd /home/wjh/chat_prj/build && $(MAKE) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.i
+.PHONY : model/friend.cpp.i
+
+model/friend.s: model/friend.cpp.s
+.PHONY : model/friend.s
+
+# target to generate assembly for a file
+model/friend.cpp.s:
+	cd /home/wjh/chat_prj/build && $(MAKE) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.s
+.PHONY : model/friend.cpp.s
+
 model/offlinemessage.o: model/offlinemessage.cpp.o
 .PHONY : model/offlinemessage.o
 
@@ -253,6 +277,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... model/friend.o"
+	@echo "... model/friend.i"
+	@echo "... model/friend.s"
 	@echo "... model/offlinemessage.o"
 	@echo "... model/offlinemessage.i"
 	@echo "... model/offlinemessage.s"

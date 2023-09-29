@@ -4,17 +4,13 @@
 // 存储用户的离线消息
 bool OfflineMsgModel::insert(int userid, string msg)
 {
-    // 1.组装sql语句
     char sql[1024] = {0};
     sprintf(sql, "insert into offlinemessage values(%d, '%s')", userid, msg.c_str());
 
     MySQL mysql;
     if (mysql.connect())
     {
-        if (mysql.update(sql))
-        {
-            return true;
-        }
+        return mysql.update(sql);
     }
     return false;
 }
@@ -22,15 +18,13 @@ bool OfflineMsgModel::insert(int userid, string msg)
 // 删除用户的离线消息
 bool OfflineMsgModel::remove(int userid)
 {
-    // 1.组装sql语句
     char sql[1024] = {0};
     sprintf(sql, "delete from offlinemessage where userid=%d", userid);
 
     MySQL mysql;
     if (mysql.connect())
     {
-        if (mysql.update(sql))
-            return true;
+        return mysql.update(sql);
     }
     return false;
 }
@@ -38,7 +32,6 @@ bool OfflineMsgModel::remove(int userid)
 // 查询用户的离线消息
 vector<string> OfflineMsgModel::query(int userid)
 {
-    // 1.组装sql语句
     char sql[1024] = {0};
     sprintf(sql, "select message from offlinemessage where userid = %d", userid);
 

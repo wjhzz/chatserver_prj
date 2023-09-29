@@ -5,6 +5,7 @@
 // 数据库相关
 #include "user.hpp"
 #include "offlinemessage.hpp"
+#include "friend.hpp"
 
 #include <muduo/net/TcpConnection.h>
 #include <unordered_map>
@@ -28,12 +29,16 @@ public:
     };
 
     MsgHandler getHandler(int msgID);
+    // 服务器断开时将连着的用户状态置为offline
+    void reset();
     // 登录
     void login(const TcpConnectionPtr &, json &, Timestamp);
     // 注册
     void reg(const TcpConnectionPtr &, json &, Timestamp);
     // 一对一聊天
     void oneChat(const TcpConnectionPtr &, json &, Timestamp);
+    // 添加好友
+    void addFriend(const TcpConnectionPtr &, json &, Timestamp);
 
     void closeException(const TcpConnectionPtr &conn);
 
@@ -43,6 +48,7 @@ private:
         _handlerMap[LOGIN_MSG] = std::bind(&ChatService::login, this, _1, _2, _3);
         _handlerMap[REG_MSG] = std::bind(&ChatService::reg, this, _1, _2, _3);
         _handlerMap[ONE_CHAT_MSG] = std::bind(&ChatService::oneChat, this, _1, _2, _3);
+        _handlerMap[ADD_FRIEND_MSG] = std::bind(&ChatService::addFriend, this, _1, _2, _3);
     };
     // 消息ID->处理函数
     std::unordered_map<int, MsgHandler> _handlerMap;
@@ -53,7 +59,7 @@ private:
     // 数据操作类对象
     UserModel _userModel;
     OfflineMsgModel _offlineMsgModel;
-    // FriendModel _friendModel;
+    FriendModel _friendModel;
     // GroupModel _groupModel;
 };
 

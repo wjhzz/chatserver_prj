@@ -4,6 +4,7 @@
 src/server/CMakeFiles/ChatServer.dir/charservice.cpp.o
  ../include/chatservice.hpp
  ../include/common.hpp
+ ../include/model/friend.hpp
  ../include/model/offlinemessage.hpp
  ../include/model/user.hpp
  ../thirdparty/json.hpp
@@ -12,13 +13,25 @@ src/server/CMakeFiles/ChatServer.dir/chatserver.cpp.o
  ../include/chatserver.hpp
  ../include/chatservice.hpp
  ../include/common.hpp
+ ../include/model/friend.hpp
  ../include/model/offlinemessage.hpp
  ../include/model/user.hpp
  ../thirdparty/json.hpp
  /home/wjh/chat_prj/src/server/chatserver.cpp
 src/server/CMakeFiles/ChatServer.dir/main.cpp.o
  ../include/chatserver.hpp
+ ../include/chatservice.hpp
+ ../include/common.hpp
+ ../include/model/friend.hpp
+ ../include/model/offlinemessage.hpp
+ ../include/model/user.hpp
+ ../thirdparty/json.hpp
  /home/wjh/chat_prj/src/server/main.cpp
+src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.o
+ ../include/db/db.hpp
+ ../include/model/friend.hpp
+ ../include/model/user.hpp
+ /home/wjh/chat_prj/src/server/model/friend.cpp
 src/server/CMakeFiles/ChatServer.dir/model/offlinemessage.cpp.o
  ../include/db/db.hpp
  ../include/model/offlinemessage.hpp

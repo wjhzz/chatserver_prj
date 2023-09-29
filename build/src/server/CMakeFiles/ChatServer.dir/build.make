@@ -167,13 +167,37 @@ src/server/CMakeFiles/ChatServer.dir/model/offlinemessage.cpp.o.provides: src/se
 
 src/server/CMakeFiles/ChatServer.dir/model/offlinemessage.cpp.o.provides.build: src/server/CMakeFiles/ChatServer.dir/model/offlinemessage.cpp.o
 
+src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.o: src/server/CMakeFiles/ChatServer.dir/flags.make
+src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.o: ../src/server/model/friend.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/wjh/chat_prj/build/CMakeFiles $(CMAKE_PROGRESS_6)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.o"
+	cd /home/wjh/chat_prj/build/src/server && /usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/ChatServer.dir/model/friend.cpp.o -c /home/wjh/chat_prj/src/server/model/friend.cpp
+
+src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ChatServer.dir/model/friend.cpp.i"
+	cd /home/wjh/chat_prj/build/src/server && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/wjh/chat_prj/src/server/model/friend.cpp > CMakeFiles/ChatServer.dir/model/friend.cpp.i
+
+src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ChatServer.dir/model/friend.cpp.s"
+	cd /home/wjh/chat_prj/build/src/server && /usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/wjh/chat_prj/src/server/model/friend.cpp -o CMakeFiles/ChatServer.dir/model/friend.cpp.s
+
+src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.o.requires:
+.PHONY : src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.o.requires
+
+src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.o.provides: src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.o.requires
+	$(MAKE) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.o.provides.build
+.PHONY : src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.o.provides
+
+src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.o.provides.build: src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.o
+
 # Object files for target ChatServer
 ChatServer_OBJECTS = \
 "CMakeFiles/ChatServer.dir/main.cpp.o" \
 "CMakeFiles/ChatServer.dir/chatserver.cpp.o" \
 "CMakeFiles/ChatServer.dir/charservice.cpp.o" \
 "CMakeFiles/ChatServer.dir/model/user.cpp.o" \
-"CMakeFiles/ChatServer.dir/model/offlinemessage.cpp.o"
+"CMakeFiles/ChatServer.dir/model/offlinemessage.cpp.o" \
+"CMakeFiles/ChatServer.dir/model/friend.cpp.o"
 
 # External object files for target ChatServer
 ChatServer_EXTERNAL_OBJECTS =
@@ -183,6 +207,7 @@ ChatServer_EXTERNAL_OBJECTS =
 ../bin/ChatServer: src/server/CMakeFiles/ChatServer.dir/charservice.cpp.o
 ../bin/ChatServer: src/server/CMakeFiles/ChatServer.dir/model/user.cpp.o
 ../bin/ChatServer: src/server/CMakeFiles/ChatServer.dir/model/offlinemessage.cpp.o
+../bin/ChatServer: src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.o
 ../bin/ChatServer: src/server/CMakeFiles/ChatServer.dir/build.make
 ../bin/ChatServer: src/server/CMakeFiles/ChatServer.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable ../../../bin/ChatServer"
@@ -197,6 +222,7 @@ src/server/CMakeFiles/ChatServer.dir/requires: src/server/CMakeFiles/ChatServer.
 src/server/CMakeFiles/ChatServer.dir/requires: src/server/CMakeFiles/ChatServer.dir/charservice.cpp.o.requires
 src/server/CMakeFiles/ChatServer.dir/requires: src/server/CMakeFiles/ChatServer.dir/model/user.cpp.o.requires
 src/server/CMakeFiles/ChatServer.dir/requires: src/server/CMakeFiles/ChatServer.dir/model/offlinemessage.cpp.o.requires
+src/server/CMakeFiles/ChatServer.dir/requires: src/server/CMakeFiles/ChatServer.dir/model/friend.cpp.o.requires
 .PHONY : src/server/CMakeFiles/ChatServer.dir/requires
 
 src/server/CMakeFiles/ChatServer.dir/clean:
