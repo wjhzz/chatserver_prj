@@ -3,8 +3,7 @@
 
 MsgHandler ChatService::getHandler(int msgID)
 {
-    auto it = _map.find(msgID);
-    if (it == _map.end())
+    if (!_handlerMap.count(msgID))
     {
         // 返回一个默认的处理器，空操作
         return [msgID](const TcpConnectionPtr &conn, json &js, Timestamp)
@@ -12,7 +11,7 @@ MsgHandler ChatService::getHandler(int msgID)
             LOG_ERROR << "msgid:" << msgID << " can not find handler!";
         };
     }
-    return it->second;
+    return _handlerMap[msgID];
 }
 // 登录
 void ChatService::login(const TcpConnectionPtr &conn, json &js, Timestamp time)
@@ -53,13 +52,13 @@ void ChatService::login(const TcpConnectionPtr &conn, json &js, Timestamp time)
             response["id"] = user.getId();
             response["name"] = user.getName();
             // 查询该用户是否有离线消息
-            // vector<string> vec = _offlineMsgModel.query(id);
-            // if (!vec.empty())
-            // {
-            //     response["offlinemsg"] = vec;
-            //     // 读取该用户的离线消息后，把该用户的所有离线消息删除掉
-            //     _offlineMsgModel.remove(id);
-            // }
+            vector<string> vec = _offlineMsgModel.query(id);
+            if (!vec.empty())
+            {
+                response["offlinemsg"] = vec;
+                // 读取该用户的离线消息后，把该用户的所有离线消息删除掉
+                _offlineMsgModel.remove(id);
+            }
 
             // 查询该用户的好友信息并返回
             // vector<User> userVec = _friendModel.query(id);
@@ -175,4 +174,23 @@ void ChatService::closeException(const TcpConnectionPtr &conn)
         user.setState("offline");
         _userModel.updateState(user);
     }
+}
+
+// 一对一聊天
+void ChatService::oneChat(const TcpConnectionPtr &conn, json &js, Timestamp time)
+{
+    int toid = js["toid"].get<int>();
+
+    {
+        lock_guard<mutex> lock(_connMutex);
+        if (_userConnMap.count(toid))
+        {
+            // toid在线，转发消息   服务器主动推送消息给toid用户
+            _userConnMap[toid]->send(js.dump());
+            return;
+        }
+    }
+
+    // toid不在线，存储离线消息
+    _offlineMsgModel.insert(toid, js.dump());
 }

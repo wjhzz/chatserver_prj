@@ -17,6 +17,8 @@ common.hpp
 ../include/common.hpp
 user.hpp
 ../include/user.hpp
+offlinemessage.hpp
+../include/offlinemessage.hpp
 muduo/net/TcpConnection.h
 -
 unordered_map
@@ -27,6 +29,20 @@ json.hpp
 ../include/json.hpp
 
 ../include/common.hpp
+
+../include/db/db.hpp
+mysql/mysql.h
+-
+muduo/base/Logging.h
+-
+string
+-
+
+../include/model/offlinemessage.hpp
+string
+-
+vector
+-
 
 ../include/model/user.hpp
 string
@@ -375,4 +391,16 @@ chatservice.hpp
 /home/wjh/chat_prj/src/server/chatservice.hpp
 json.hpp
 /home/wjh/chat_prj/src/server/json.hpp
+
+/home/wjh/chat_prj/src/server/model/offlinemessage.cpp
+offlinemessage.hpp
+/home/wjh/chat_prj/src/server/model/offlinemessage.hpp
+db.hpp
+/home/wjh/chat_prj/src/server/model/db.hpp
+
+/home/wjh/chat_prj/src/server/model/user.cpp
+user.hpp
+/home/wjh/chat_prj/src/server/model/user.hpp
+db.hpp
+/home/wjh/chat_prj/src/server/model/db.hpp
 

@@ -4,6 +4,7 @@
 
 // 数据库相关
 #include "user.hpp"
+#include "offlinemessage.hpp"
 
 #include <muduo/net/TcpConnection.h>
 #include <unordered_map>
@@ -27,28 +28,31 @@ public:
     };
 
     MsgHandler getHandler(int msgID);
-
+    // 登录
     void login(const TcpConnectionPtr &, json &, Timestamp);
     // 注册
     void reg(const TcpConnectionPtr &, json &, Timestamp);
+    // 一对一聊天
+    void oneChat(const TcpConnectionPtr &, json &, Timestamp);
 
     void closeException(const TcpConnectionPtr &conn);
 
 private:
     ChatService()
     {
-        _map[LOGIN_MSG] = std::bind(&ChatService::login, this, _1, _2, _3);
-        _map[REG_MSG] = std::bind(&ChatService::reg, this, _1, _2, _3);
+        _handlerMap[LOGIN_MSG] = std::bind(&ChatService::login, this, _1, _2, _3);
+        _handlerMap[REG_MSG] = std::bind(&ChatService::reg, this, _1, _2, _3);
+        _handlerMap[ONE_CHAT_MSG] = std::bind(&ChatService::oneChat, this, _1, _2, _3);
     };
     // 消息ID->处理函数
-    std::unordered_map<int, MsgHandler> _map;
+    std::unordered_map<int, MsgHandler> _handlerMap;
     // 在线用户的连接映射  userid->conn
     std::unordered_map<int, TcpConnectionPtr> _userConnMap;
     mutex _connMutex;
 
     // 数据操作类对象
     UserModel _userModel;
-    // OfflineMsgModel _offlineMsgModel;
+    OfflineMsgModel _offlineMsgModel;
     // FriendModel _friendModel;
     // GroupModel _groupModel;
 };

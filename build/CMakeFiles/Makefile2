@@ -95,7 +95,7 @@ src/server/preinstall:
 src/server/CMakeFiles/ChatServer.dir/all:
 	$(MAKE) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/depend
 	$(MAKE) -f src/server/CMakeFiles/ChatServer.dir/build.make src/server/CMakeFiles/ChatServer.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/wjh/chat_prj/build/CMakeFiles  2 3 4 5
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/wjh/chat_prj/build/CMakeFiles  2 3 4 5 6
 	@echo "Built target ChatServer"
 .PHONY : src/server/CMakeFiles/ChatServer.dir/all
 
@@ -105,7 +105,7 @@ all: src/server/CMakeFiles/ChatServer.dir/all
 
 # Build rule for subdir invocation for target.
 src/server/CMakeFiles/ChatServer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/wjh/chat_prj/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/wjh/chat_prj/build/CMakeFiles 5
 	$(MAKE) -f CMakeFiles/Makefile2 src/server/CMakeFiles/ChatServer.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/wjh/chat_prj/build/CMakeFiles 0
 .PHONY : src/server/CMakeFiles/ChatServer.dir/rule
