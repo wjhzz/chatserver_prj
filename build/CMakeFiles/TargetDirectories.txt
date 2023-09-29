@@ -1,0 +1,2 @@
+/home/wjh/chat_prj/build/src/client/CMakeFiles/ChatClient.dir
+/home/wjh/chat_prj/build/src/server/CMakeFiles/ChatServer.dir
