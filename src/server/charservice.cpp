@@ -1,5 +1,16 @@
 #include "chatservice.hpp"
+// 数据库相关
+#include "user.hpp"
+#include "offlinemessage.hpp"
+#include "friend.hpp"
+#include "group.hpp"
 #include <muduo/base/Logging.h>
+
+// 数据操作类对象
+UserModel _userModel;
+OfflineMsgModel _offlineMsgModel;
+FriendModel _friendModel;
+GroupModel _groupModel;
 
 MsgHandler ChatService::getHandler(int msgID)
 {
@@ -96,33 +107,33 @@ void ChatService::login(const TcpConnectionPtr &conn, json &js, Timestamp time)
             }
 
             // // 查询用户的群组信息
-            // vector<Group> groupuserVec = _groupModel.queryGroups(id);
-            // if (!groupuserVec.empty())
-            // {
-            //     // group:[{groupid:[xxx, xxx, xxx, xxx]}]
-            //     vector<string> groupV;
-            //     for (Group &group : groupuserVec)
-            //     {
-            //         json grpjson;
-            //         grpjson["id"] = group.getId();
-            //         grpjson["groupname"] = group.getName();
-            //         grpjson["groupdesc"] = group.getDesc();
-            //         vector<string> userV;
-            //         for (GroupUser &user : group.getUsers())
-            //         {
-            //             json js;
-            //             js["id"] = user.getId();
-            //             js["name"] = user.getName();
-            //             js["state"] = user.getState();
-            //             js["role"] = user.getRole();
-            //             userV.push_back(js.dump());
-            //         }
-            //         grpjson["users"] = userV;
-            //         groupV.push_back(grpjson.dump());
-            //     }
+            vector<Group> groupuserVec = _groupModel.queryGroups(id);
+            if (!groupuserVec.empty())
+            {
+                // group:[{groupid:[xxx, xxx, xxx, xxx]}]
+                vector<string> groupV;
+                for (Group &group : groupuserVec)
+                {
+                    json grpjson;
+                    grpjson["id"] = group.getId();
+                    grpjson["groupname"] = group.getName();
+                    grpjson["groupdesc"] = group.getDesc();
+                    vector<string> userV;
+                    for (GroupUser &user : group.getUsers())
+                    {
+                        json js;
+                        js["id"] = user.getId();
+                        js["name"] = user.getName();
+                        js["state"] = user.getState();
+                        js["role"] = user.getRole();
+                        userV.push_back(js.dump());
+                    }
+                    grpjson["users"] = userV;
+                    groupV.push_back(grpjson.dump());
+                }
 
-            //     response["groups"] = groupV;
-            // }
+                response["groups"] = groupV;
+            }
 
             conn->send(response.dump());
         }
@@ -222,4 +233,75 @@ void ChatService::addFriend(const TcpConnectionPtr &conn, json &js, Timestamp ti
 
     // 存储好友信息
     _friendModel.insert(userid, friendid);
+}
+
+// 创建群组业务
+void ChatService::createGroup(const TcpConnectionPtr &conn, json &js, Timestamp time)
+{
+    int userid = js["id"].get<int>();
+    string name = js["groupname"];
+    string desc = js["groupdesc"];
+
+    // 存储新创建的群组信息
+    Group group(-1, name, desc);
+    if (_groupModel.createGroup(group) && _groupModel.addGroup(userid, group.getId(), "creator"))
+    {
+        // 创建成功
+        json response;
+        response["msgid"] = CREATE_GROUP_MSG_ACK;
+        response["errno"] = 0;
+        response["id"] = group.getId();
+        conn->send(response.dump());
+    }
+    else
+    {
+        if (group.getId() != -1)
+            _groupModel.deleteGroup(group.getId());
+        // 创建失败
+        json response;
+        response["msgid"] = CREATE_GROUP_MSG_ACK;
+        response["errno"] = 0;
+        response["id"] = group.getId();
+        conn->send(response.dump());
+    }
+}
+
+// 加入群组业务
+void ChatService::addGroup(const TcpConnectionPtr &conn, json &js, Timestamp time)
+{
+    int userid = js["id"].get<int>();
+    int groupid = js["groupid"].get<int>();
+    _groupModel.addGroup(userid, groupid, "normal");
+}
+
+// 群组聊天业务
+void ChatService::groupChat(const TcpConnectionPtr &conn, json &js, Timestamp time)
+{
+    int userid = js["id"].get<int>();
+    int groupid = js["groupid"].get<int>();
+    vector<int> useridVec = _groupModel.queryGroupUsers(userid, groupid);
+
+    lock_guard<mutex> lock(_connMutex);
+    for (int id : useridVec)
+    {
+        if (_userConnMap.count(id))
+        {
+            // 转发群消息
+            _userConnMap[id]->send(js.dump());
+        }
+        else
+        {
+            // 查询toid是否在线
+            // User user = _userModel.query(id);
+            // if (user.getState() == "online")
+            // {
+            //     _redis.publish(id, js.dump());
+            // }
+            // else
+            {
+                // 存储离线群消息
+                _offlineMsgModel.insert(id, js.dump());
+            }
+        }
+    }
 }

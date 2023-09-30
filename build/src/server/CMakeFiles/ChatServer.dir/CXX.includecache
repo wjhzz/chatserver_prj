@@ -6,21 +6,9 @@
 
 #IncludeRegexTransform: 
 
-../include/chatserver.hpp
-muduo/net/TcpServer.h
--
-muduo/net/EventLoop.h
--
-
 ../include/chatservice.hpp
 common.hpp
 ../include/common.hpp
-user.hpp
-../include/user.hpp
-offlinemessage.hpp
-../include/offlinemessage.hpp
-friend.hpp
-../include/friend.hpp
 muduo/net/TcpConnection.h
 -
 unordered_map
@@ -41,6 +29,12 @@ string
 -
 
 ../include/model/friend.hpp
+user.hpp
+../include/model/user.hpp
+vector
+-
+
+../include/model/group.hpp
 user.hpp
 ../include/model/user.hpp
 vector
@@ -389,30 +383,20 @@ type_traits
 /home/wjh/chat_prj/src/server/charservice.cpp
 chatservice.hpp
 /home/wjh/chat_prj/src/server/chatservice.hpp
+user.hpp
+/home/wjh/chat_prj/src/server/user.hpp
+offlinemessage.hpp
+/home/wjh/chat_prj/src/server/offlinemessage.hpp
+friend.hpp
+/home/wjh/chat_prj/src/server/friend.hpp
+group.hpp
+/home/wjh/chat_prj/src/server/group.hpp
 muduo/base/Logging.h
 -
 
-/home/wjh/chat_prj/src/server/chatserver.cpp
-chatserver.hpp
-/home/wjh/chat_prj/src/server/chatserver.hpp
-chatservice.hpp
-/home/wjh/chat_prj/src/server/chatservice.hpp
-json.hpp
-/home/wjh/chat_prj/src/server/json.hpp
-
-/home/wjh/chat_prj/src/server/main.cpp
-chatserver.hpp
-/home/wjh/chat_prj/src/server/chatserver.hpp
-chatservice.hpp
-/home/wjh/chat_prj/src/server/chatservice.hpp
-iostream
--
-signal.h
--
-
-/home/wjh/chat_prj/src/server/model/friend.cpp
-friend.hpp
-/home/wjh/chat_prj/src/server/model/friend.hpp
+/home/wjh/chat_prj/src/server/model/group.cpp
+group.hpp
+/home/wjh/chat_prj/src/server/model/group.hpp
 db.hpp
 /home/wjh/chat_prj/src/server/model/db.hpp
 

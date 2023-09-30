@@ -2,11 +2,6 @@
 #define _CHATSERVICE_H
 #include "common.hpp"
 
-// 数据库相关
-#include "user.hpp"
-#include "offlinemessage.hpp"
-#include "friend.hpp"
-
 #include <muduo/net/TcpConnection.h>
 #include <unordered_map>
 #include <mutex>
@@ -39,6 +34,12 @@ public:
     void oneChat(const TcpConnectionPtr &, json &, Timestamp);
     // 添加好友
     void addFriend(const TcpConnectionPtr &, json &, Timestamp);
+    // 创建群组
+    void createGroup(const TcpConnectionPtr &, json &, Timestamp);
+    // 加入群组
+    void addGroup(const TcpConnectionPtr &, json &, Timestamp);
+    // 群组聊天
+    void groupChat(const TcpConnectionPtr &, json &, Timestamp);
 
     void closeException(const TcpConnectionPtr &conn);
 
@@ -49,18 +50,15 @@ private:
         _handlerMap[REG_MSG] = std::bind(&ChatService::reg, this, _1, _2, _3);
         _handlerMap[ONE_CHAT_MSG] = std::bind(&ChatService::oneChat, this, _1, _2, _3);
         _handlerMap[ADD_FRIEND_MSG] = std::bind(&ChatService::addFriend, this, _1, _2, _3);
+        _handlerMap[CREATE_GROUP_MSG] = std::bind(&ChatService::createGroup, this, _1, _2, _3);
+        _handlerMap[ADD_GROUP_MSG] = std::bind(&ChatService::addGroup, this, _1, _2, _3);
+        _handlerMap[GROUP_CHAT_MSG] = std::bind(&ChatService::groupChat, this, _1, _2, _3);
     };
     // 消息ID->处理函数
     std::unordered_map<int, MsgHandler> _handlerMap;
     // 在线用户的连接映射  userid->conn
     std::unordered_map<int, TcpConnectionPtr> _userConnMap;
-    mutex _connMutex;
-
-    // 数据操作类对象
-    UserModel _userModel;
-    OfflineMsgModel _offlineMsgModel;
-    FriendModel _friendModel;
-    // GroupModel _groupModel;
+    std::mutex _connMutex;
 };
 
 #endif
