@@ -11,6 +11,7 @@ SET(CMAKE_DEPENDS_CHECK_CXX
   "/home/wjh/chat_prj/src/server/model/group.cpp" "/home/wjh/chat_prj/build/src/server/CMakeFiles/ChatServer.dir/model/group.cpp.o"
   "/home/wjh/chat_prj/src/server/model/offlinemessage.cpp" "/home/wjh/chat_prj/build/src/server/CMakeFiles/ChatServer.dir/model/offlinemessage.cpp.o"
   "/home/wjh/chat_prj/src/server/model/user.cpp" "/home/wjh/chat_prj/build/src/server/CMakeFiles/ChatServer.dir/model/user.cpp.o"
+  "/home/wjh/chat_prj/src/server/redis/redis.cpp" "/home/wjh/chat_prj/build/src/server/CMakeFiles/ChatServer.dir/redis/redis.cpp.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 
