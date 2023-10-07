@@ -221,6 +221,14 @@ void ChatService::oneChat(const TcpConnectionPtr &conn, json &js, Timestamp time
         }
     }
 
+    // 查询toid是否在线
+    User user = _userModel.query(toid);
+    if (user.getState() == "online")
+    {
+        _redis.publish(toid, js.dump());
+        return;
+    }
+
     // toid不在线，存储离线消息
     _offlineMsgModel.insert(toid, js.dump());
 }
