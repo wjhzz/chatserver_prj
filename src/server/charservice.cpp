@@ -106,7 +106,8 @@ void ChatService::login(const TcpConnectionPtr &conn, json &js, Timestamp time)
                 response["friends"] = vec2;
             }
 
-            // // 查询用户的群组信息
+            // 查询用户的群组信息
+            // FIXME: 群组创建者addGroup会导致json解析错误
             vector<Group> groupuserVec = _groupModel.queryGroups(id);
             if (!groupuserVec.empty())
             {
@@ -172,6 +173,7 @@ void ChatService::reg(const TcpConnectionPtr &conn, json &js, Timestamp)
         json response;
         response["msgid"] = REG_MSG_ACK;
         response["errno"] = 1;
+        response["errmsg"] = "register failed!";
         conn->send(response.dump());
     }
 }
@@ -240,7 +242,23 @@ void ChatService::addFriend(const TcpConnectionPtr &conn, json &js, Timestamp ti
     int friendid = js["friendid"].get<int>();
 
     // 存储好友信息
-    _friendModel.insert(userid, friendid);
+    if (_friendModel.insert(userid, friendid))
+    {
+        // 创建成功
+        json response;
+        response["msgid"] = ADD_FRIEND_MSG_ACK;
+        response["errno"] = 0;
+        conn->send(response.dump());
+    }
+    else
+    {
+        // 创建失败
+        json response;
+        response["msgid"] = ADD_FRIEND_MSG_ACK;
+        response["errno"] = 1;
+        response["errmsg"] = "addFriend failed!";
+        conn->send(response.dump());
+    }
 }
 
 // 创建群组业务
@@ -268,8 +286,8 @@ void ChatService::createGroup(const TcpConnectionPtr &conn, json &js, Timestamp 
         // 创建失败
         json response;
         response["msgid"] = CREATE_GROUP_MSG_ACK;
-        response["errno"] = 0;
-        response["id"] = group.getId();
+        response["errno"] = 1;
+        response["errmsg"] = "create group failed!";
         conn->send(response.dump());
     }
 }
@@ -279,7 +297,23 @@ void ChatService::addGroup(const TcpConnectionPtr &conn, json &js, Timestamp tim
 {
     int userid = js["id"].get<int>();
     int groupid = js["groupid"].get<int>();
-    _groupModel.addGroup(userid, groupid, "normal");
+    if (_groupModel.addGroup(userid, groupid, "normal"))
+    {
+        // 成功
+        json response;
+        response["msgid"] = ADD_GROUP_MSG_ACK;
+        response["errno"] = 0;
+        conn->send(response.dump());
+    }
+    else
+    {
+        // 失败
+        json response;
+        response["msgid"] = ADD_GROUP_MSG_ACK;
+        response["errno"] = 1;
+        response["errmsg"] = "addGroup failed!";
+        conn->send(response.dump());
+    }
 }
 
 // 群组聊天业务

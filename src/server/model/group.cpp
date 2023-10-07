@@ -22,7 +22,7 @@ bool GroupModel::createGroup(Group &group)
 }
 
 // 删除群组
-// TODO: need test
+// TODO: need test  已测试
 void GroupModel::deleteGroup(int groupid)
 {
     char sql[1024] = {0};

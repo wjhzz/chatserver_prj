@@ -65,6 +65,7 @@ bool UserModel::updateState(User user)
 void UserModel::resetState(string userids)
 {
     // FIXME: 集群时存在问题，应该只将自己连着的用户置为offline
+    // 已修复
     char sql[1024] = "update user set state = 'offline' where state = 'online'";
     sprintf(sql, "update user set state = 'offline' where id in (%s)", userids.c_str());
 

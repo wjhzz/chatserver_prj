@@ -3,4 +3,7 @@
 
 src/client/CMakeFiles/ChatClient.dir/main.cpp.o
  ../include/common.hpp
+ ../include/model/group.hpp
+ ../include/model/user.hpp
+ ../thirdparty/json.hpp
  /home/wjh/chat_prj/src/client/main.cpp

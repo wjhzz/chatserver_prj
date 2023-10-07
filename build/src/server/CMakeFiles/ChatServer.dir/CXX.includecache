@@ -6,6 +6,12 @@
 
 #IncludeRegexTransform: 
 
+../include/chatserver.hpp
+muduo/net/TcpServer.h
+-
+muduo/net/EventLoop.h
+-
+
 ../include/chatservice.hpp
 common.hpp
 ../include/common.hpp
@@ -396,9 +402,21 @@ group.hpp
 muduo/base/Logging.h
 -
 
-/home/wjh/chat_prj/src/server/redis/redis.cpp
-redis.hpp
-/home/wjh/chat_prj/src/server/redis/redis.hpp
-muduo/base/Logging.h
+/home/wjh/chat_prj/src/server/chatserver.cpp
+chatserver.hpp
+/home/wjh/chat_prj/src/server/chatserver.hpp
+chatservice.hpp
+/home/wjh/chat_prj/src/server/chatservice.hpp
+json.hpp
+/home/wjh/chat_prj/src/server/json.hpp
+
+/home/wjh/chat_prj/src/server/main.cpp
+chatserver.hpp
+/home/wjh/chat_prj/src/server/chatserver.hpp
+chatservice.hpp
+/home/wjh/chat_prj/src/server/chatservice.hpp
+iostream
+-
+signal.h
 -
 
