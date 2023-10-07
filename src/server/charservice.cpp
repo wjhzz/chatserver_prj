@@ -305,3 +305,24 @@ void ChatService::groupChat(const TcpConnectionPtr &conn, json &js, Timestamp ti
         }
     }
 }
+
+// 处理注销业务
+void ChatService::logout(const TcpConnectionPtr &conn, json &js, Timestamp time)
+{
+    int userid = js["id"].get<int>();
+
+    {
+        lock_guard<mutex> lock(_connMutex);
+        auto it = _userConnMap.find(userid);
+        if (it != _userConnMap.end())
+        {
+            _userConnMap.erase(it);
+        }
+    }
+
+    // 用户注销，相当于就是下线，在redis中取消订阅通道
+    // _redis.unsubscribe(userid);
+
+    // 更新用户的状态信息
+    _userModel.updateState(User(userid));
+}

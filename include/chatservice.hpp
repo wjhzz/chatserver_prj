@@ -24,7 +24,7 @@ public:
     };
 
     MsgHandler getHandler(int msgID);
-    // 服务器断开时将连着的用户状态置为offline
+    // 服务器断开时将连着的用户状态置为 offline
     void reset();
     // 登录
     void login(const TcpConnectionPtr &, json &, Timestamp);
@@ -40,7 +40,9 @@ public:
     void addGroup(const TcpConnectionPtr &, json &, Timestamp);
     // 群组聊天
     void groupChat(const TcpConnectionPtr &, json &, Timestamp);
-
+    // 处理注销业务
+    void logout(const TcpConnectionPtr &conn, json &js, Timestamp time);
+    // 处理客户端异常退出
     void closeException(const TcpConnectionPtr &conn);
 
 private:
@@ -53,6 +55,7 @@ private:
         _handlerMap[CREATE_GROUP_MSG] = std::bind(&ChatService::createGroup, this, _1, _2, _3);
         _handlerMap[ADD_GROUP_MSG] = std::bind(&ChatService::addGroup, this, _1, _2, _3);
         _handlerMap[GROUP_CHAT_MSG] = std::bind(&ChatService::groupChat, this, _1, _2, _3);
+        _handlerMap[LOGOUT_MSG] = std::bind(&ChatService::logout, this, _1, _2, _3);
     };
     // 消息ID->处理函数
     std::unordered_map<int, MsgHandler> _handlerMap;
